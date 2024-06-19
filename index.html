@@ -1,0 +1,659 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="./css/app.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <title>Thop Games | Lets Play Online</title>
+    <meta property="og:title" content="Thop Games | Lets Play Online" />
+    <meta property="og:url" content="https://299.play.online.thopgames.com" />
+    <meta property="og:type" content="game" />
+    <meta property=" og:description"
+        content="On Thopgames you can play free online games at school or at home. Thopgames has the best online game selection and offers the most fun experience to play alone or with friends. We support mobile and desktop games." />
+    <meta property="og:image" content="https://2048.thopgames.com/images/banner.png" />
+    <meta name="keywords" content="Play thop games, thop games, thop games, online thop games" />
+    <meta name="author" content="Thop Games" />
+
+    <script>
+
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+
+                subscribeUser();
+               
+            });
+        }
+
+       
+        // const options = {
+        //     TTL: 10000,
+        //     vapidDetails: vapidDetails
+        // };
+
+
+        async function subscribeUser() {
+            const result = await Notification.requestPermission();
+            if (result === 'denied') {
+                console.error('The user explicitly denied the permission request.');
+                return;
+            }
+            if (result === 'granted') {
+                console.info('The user accepted the permission request.');
+
+                const register = await navigator.serviceWorker.register("/sw.js", {
+                    scope: "/"
+                }).then(async (register) => {
+                    var serviceWorker;
+                    if (register.installing) {
+                        serviceWorker = register.installing;
+                        
+                    } else if (register.waiting) {
+                        serviceWorker = register.waiting;
+                        
+                    } else if (register.active) {
+                        serviceWorker = register.active;
+                        
+                    }
+                    
+                    if (serviceWorker) {
+                        
+                        if (serviceWorker.state == "activated") {
+                            //If push subscription wasnt done yet have to do here
+                            
+
+
+                            const subscription = await register.pushManager.subscribe({
+                                userVisibleOnly: true,
+                               applicationServerKey: urlB64ToUint8Array("BN8K6XC69xEzTRyf157qRtDrLpwt6UQlgrSJeEE9vY-O9UTSlQ9o6QN9uJnoVm_0S8Fgw5_jHA7_Z2RlVA9GE88")
+                            });
+
+                            const qw = JSON.stringify(subscription);
+                            
+                            //         // const {endPoint } = subscription;
+                            const subscriptionData = JSON.parse(qw);
+                            
+
+                            //         //updateSubscriptionOnServer(subscription);
+
+                            //         isSubscribed = true;
+                            socket.emit("FcmToken", {
+                                userId: localStorage.getItem("uId"),
+                                subscriptionData
+
+                            })
+
+                            socket.on("resFcmToken", (data) => {
+                                
+                            })
+
+
+                        }
+                        serviceWorker.addEventListener("statechange", async function (e) {
+                            
+                            if (e.target.state == "activated") {
+                                // use pushManger for subscribing here.
+                                
+
+                            }
+                        });
+                    }
+
+                })
+
+        }
+         }
+
+        function urlB64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+           
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+            const rawData = window.atob(base64);
+            
+            const outputArray = new Uint8Array(rawData.length);
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            
+            return outputArray;
+        }
+
+
+
+        self.addEventListener('push', function (event) {
+
+
+self.registration.showNotification(
+  "Hello"
+);
+
+});
+
+
+
+// //   event.waitUntil(promise);
+//         });
+
+
+    </script>
+
+
+    <link rel="manifest" href="/manifest.json" />
+    <script src="js/main.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/media.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body onload="">
+    <main class="app-wrapper-container">
+        <div id="snackbar"></div>
+
+         <div id="prelogin_top">
+            <div class="navbar d-flex justify-content-center align-items-center">
+               <a href="https://thopgames.com"> <img src="./images/Logo.png" alt="ThopGames Logo" draggable="false" class="img-fluid mainLogo" /></a>
+            </div>
+
+
+            <script async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3112818294798377"
+            crossorigin="anonymous"></script>
+
+
+        <!-- thop_bannersquare -->
+
+
+        <script async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3112818294798377"
+            crossorigin="anonymous"></script>
+
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3112818294798377"
+            data-ad-slot="8642117244" data-ad-format="auto" data-full-width-responsive="true"></ins>
+
+
+        <script>
+            const myTimeout = setTimeout(adLoads, 10);
+
+            function adLoads() {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+
+        </script>
+
+
+
+
+            <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+                type="text/javascript"></script>
+
+            <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+                integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+                crossorigin="anonymous"></script>
+            <script>
+
+
+
+                const id = localStorage.getItem('uId');
+                // var socket = io("https://api.message.thopgames.com")
+                var socket = io("https://api.message.thopgames.com", {
+                    transports: ["websocket"],
+                    auth: {
+                        userId: localStorage.getItem('uId'),
+                        userIp: localStorage.getItem('uIp'),
+                        uUrl: localStorage.getItem("uUrl"),
+                        cn: localStorage.getItem("country_code")
+                    },
+                    upgrade: false,
+                    reconnection: true,
+                });
+
+                ////   API Calling....................
+
+                window.onload = function () {
+                    localStorage.setItem("uUrl", window.location.href);
+
+                    var uId = localStorage.getItem("uId");
+                    var uIp = localStorage.getItem("uIp");
+                    var cn = localStorage.getItem("country_code");
+                    var uUrl = localStorage.getItem("uUrl")
+                    
+
+                    if (!uId) {
+                        let data = {
+                            uId: localStorage.getItem("uId"),
+                            uUrl: localStorage.getItem("uURL"),
+                        };
+
+                        let fetchData = {
+                            method: "POST",
+                            body: JSON.stringify({ acc: "382d3515-c9e6-4d23-ba94-3ad3711e725b" }),
+                            headers: new Headers({
+                                "Content-Type": "application/json; charset=UTF-8",
+                            }),
+                        };
+
+                        fetch('https://api.message.thopgames.com/api/id/generate', fetchData)
+                            .then(response => response.json())
+                            .then(response => {
+                                localStorage.setItem("uId", response?.id)
+                            })
+                            .catch(error => {
+                                
+                            });
+
+                        ////   API Calling End....................
+                    }
+                    if (!uIp) {
+                        fetch("https://geolocation-db.com/json/")
+                            .then(response => response.json())
+                            .then((response) => {
+                                
+                                localStorage.setItem("uIp", response?.IPv4)
+                                localStorage.setItem("country_code", response?.country_code)
+                            }).catch(error => {
+                                console.error('Error:', error);
+                            });
+                    }
+
+
+                    Notification.requestPermission().then(function (getperm) {
+                        ;
+                    });
+
+
+                };
+
+                var messages = document.getElementById("messages");
+                var form = document.getElementById("form");
+                var input = document.getElementById("input");
+
+                
+
+                function flashFun(msg) {
+                    var title = msg?.title || "Demo";
+                    icon = "image-url";
+                    var body = "Message to be displayed";
+
+                    if (!("Notification" in window)) {
+                        alert("This browser does not support desktop notification");
+                    } else if (Notification.permission === "granted") {
+                        subscribeUser();
+                       
+                    } else if (Notification.permission !== "denied") {
+                        Notification.requestPermission().then((permission) => {
+                            if (permission === "granted") {
+                                subscribeUser();
+                                
+                            }
+                        });
+                    }
+                }
+
+                socket.on("hello user", function (msg) {
+                    console.log(
+                        "🚀 ~ file: index.html:79 ~ socket.on ~ messageRes:",
+                        msg
+                    );
+                    flashFun(msg);
+                    var item = document.createElement("li");
+                    item.textContent = msg;
+                    messages.appendChild(item);
+                    window.scrollTo(0, document.body.scrollHeight);
+                });
+            </script>
+
+           
+
+            <!-- # Top Games Active Users -->
+            <section class="top-games-section position-relative pb-3 pt-0 top-games-active-users">
+                <div class="container">
+                    <div class="row" id="installpopup">
+                        <h3 class="col-12 text-center mt-4">
+                            <div class="adBG p-2">
+                                <div class="mb-3 txtClr">Welcome to Add on home screen</div>
+
+                                <div class="d-flex justify-content-around pb-1">
+                                    <button id="install" class="cusBtnOption">Add</button>
+                                </div>
+                            </div>
+                        </h3>
+                    </div>
+
+                    <script async src="https://cse.google.com/cse.js?cx=0d6399eeda86ddf8b"></script>
+                    <div class="gcse-search"></div>
+
+                    <div class="row">
+                        <h3 class="col-12 text-center mt-4">
+                            <div class="adBG p-2">
+                                <div class="mb-3 txtClr">
+                                    Pick which of these game categories you enjoy more!
+                                </div>
+
+                                <div class="d-flex justify-content-around pb-1">
+                                    <a href="onclickpage.html" class="cusBtnOption">🏹 Classic</a>
+                                    <a href="onclickpage.html" class="cusBtnOption">⚽ Sports</a>
+                                </div>
+                            </div>
+                        </h3>
+                    </div>
+
+                    <ins class="adsbygoogle" style="display:inline-block;width:360px;height:400px"
+                    data-ad-client="ca-pub-3112818294798377" data-ad-slot="8933707381"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                   </script>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <hgroup class="text-center mt-3">
+                                <h3>ThopGames - Lets play online</h3>
+                            </hgroup>
+                            <div class="form-row">
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/cricketbatter.png"
+                                                data-src="images/logos/cricketbatter.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Cricket</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/cricketbatter/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--  -->
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/fishingtime.png"
+                                                data-src="images/logos/fishingtime.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Fishing Time</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/fishingtime/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/neonbricks.png"
+                                                data-src="images/logos/neonbricks.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Neon Bricks</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/neonbricks/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--  -->
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/gravityescape.png"
+                                                data-src="images/logos/gravityescape.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Gravity Escape</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/gravityescape/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--  -->
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/2048.png"
+                                                data-src="images/logos/2048.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>2048</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/2048/2048-master/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--  -->
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/aliengoesdown.png"
+                                                data-src="images/logos/aliengoesdown.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Alien Down</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/aliengoesdown/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--  -->
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/runbirdrunfromegg.png"
+                                                data-src="images/logos/runbirdrunfromegg.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Run Bird </b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/runbirdrunfromegg/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/collectthesameballs.png"
+                                                data-src="images/logos/collectthesameballs.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Collect Ball</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/collectthesameballs/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/docorrectexcercise.png"
+                                                data-src="images/logos/docorrectexcercise.png" alt="" />
+                                        </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Do Exercise</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/docorrectexcercise/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 cols" v-for="game in game_list"
+                                    v-if="game.consolidate_high_score.total_contest > 0 && game.seo_url!=null">
+                                    <div class="card-box p-2">
+                                        <div class="featured-image">
+                                            <img class="lazy" src="images/logos/coinsnake.png"
+                                                data-src="images/logos/coinsnake.png" alt="" />
+                                       </div>
+                                        <div class="game-name w-100 my-1 text-center">
+                                            <p class="m-0 txtClr"><b>Coin Snake</b></p>
+                                        </div>
+                                        <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com/games/coinsnake/index.html"><span
+                                                    class="shimmer-effect text-white">Play Game</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container" >
+                    <div
+                                            class="content d-flex flex-column justfy-content-center align-iteams-center">
+                                            <a class="playcusBtnOption text-center"
+                                                href="https://thopgames.com"><span
+                                                    class="shimmer-effect text-white">More Games</span></a>
+                                            <!-- <h5><span class="active-sign"></span>1,205 Users</h5> -->
+                                        </div>
+
+                    <a class="text-center d-flex justify-content-center"
+                    href="https://thopgames.com/privacy-policy">Privacy Policy</a>
+                   
+                </div>
+            </section>
+            <!-- # Ads -->
+            <!-- <Googlead pageCode="DG1_DOWN"/> -->
+            <!-- # Footer -->
+            <!-- # Footer -->
+            <footer class="py-3">
+                <div class="container">
+                    <div class="align-items-center d-flex justify-content-center">
+                        <div class="cols social-icons desktop-view">
+                            <a href="https://www.facebook.com/thopgames"><i
+                                    class="fa-brands fa-square-facebook"></i></a>
+                            <a href="https://www.instagram.com/thopgames/"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/@thopgames"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script></script>
+
+    <style scoped>
+        .adbox {
+            min-height: 250px;
+        }
+    </style>
+
+    <!-- <script src="js/main.js"></script> -->
+    <!-- Taboola Flush Code -->
+    <script type="text/javascript">
+        window._taboola = window._taboola || [];
+        _taboola.push({
+            flush: true,
+        });
+    </script>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<!-- default Js-->
+<script src="js/jquery-3.6.1.min.js"></script>
+
+<!-- Carousel Js-->
+<script src="js/owl.carousel.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Bootstrap Js-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SR3R4TLVYZ"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-SR3R4TLVYZ");
+</script>
+
+<!-- <script src="js/app.js"></script> -->
+
+</html>
